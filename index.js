@@ -87,6 +87,6 @@ function setupDynamo (alexa) {
     }
 }
 
-exports.handler = bst.Logless.capture('de1b1580-528d-4f8d-960a-a54ecbcc1ab4', handler);
+exports.handler = bst.Logless.capture('8cba919b-fdc9-402a-a90a-29f53905d037', handler);
 
 
