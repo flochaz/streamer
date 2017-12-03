@@ -12,17 +12,17 @@ require('dotenv').config();
 setupDynamo();
 
 var Alexa = require('alexa-sdk');
-var constants = require('./constants');
-var stateHandlers = require('./stateHandlers');
-var audioEventHandlers = require('./audioEventHandlers');
-var AudioManager = require('./audioManager');
+var constants = require('./lib/constants');
+var stateHandlers = require('./lib/stateHandlers');
+var audioEventHandlers = require('./lib/audioEventHandlers');
+var AudioManager = require('./lib/audioManager');
 var qs = require('querystring');
 var bst = require('bespoken-tools');
 
 // Initial entry point, and checks the signature if necessary
 var handler = function(event, context) {
     var appID = null;
-    var rssURL = 'http://bespoken.libsyn.com/rss';
+    var rssURL = 'https://s3-us-west-1.amazonaws.com/floz-rss-feed-reader/bonEntendeur.rss';
 
     if (process.env.RSS_URL) {
         rssURL = process.env.RSS_URL;
@@ -83,7 +83,7 @@ function setupDynamo (alexa) {
             warnOnReplace: false,
             warnOnUnregistered: false
         });
-        mockery.registerMock('./DynamoAttributesHelper', require("./mockDynamo"));
+        mockery.registerMock('./DynamoAttributesHelper', require("./lib/mockDynamo"));
     }
 }
 
