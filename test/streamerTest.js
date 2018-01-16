@@ -36,7 +36,7 @@ describe('Streamer', function() {
             // Launch the skill via sending it a LaunchRequest
             alexa.launched(function (error, payload) {
                 // Check that the introduction is play as outputSpeech
-                assert.equal(payload.response.outputSpeech.ssml, '<speak> <audio src="https://s3.amazonaws.com/bespoken/streaming/bespokenspodcast-INTRODUCTION.mp3" />You can say play, scan titles, or about the podcast </speak>');
+                assert.equal(payload.response.outputSpeech.ssml, '<speak> BonEntendeur. You can say play, scan titles or about the show </speak>');
 
                 // Emulate the user saying 'Play'
                 alexa.spoken('Play', function (error, payload) {
@@ -44,7 +44,7 @@ describe('Streamer', function() {
                     assert.equal(payload.response.directives[0].type, 'AudioPlayer.Play');
                     assert.equal(payload.response.directives[0].playBehavior, 'REPLACE_ALL');
                     assert.equal(payload.response.directives[0].audioItem.stream.token, '0');
-                    assert(payload.response.directives[0].audioItem.stream.url.startsWith('https://traffic.libsyn.com/bespoken'));
+                    assert(payload.response.directives[0].audioItem.stream.url.startsWith('https://bonentendeurmedia.com/mixtape'));
                     done();
                 });
             });
@@ -55,7 +55,7 @@ describe('Streamer', function() {
             alexa.spoken('Play', function (error, response) {
                 assert.equal(response.response.directives[0].type, 'AudioPlayer.Play');
                 assert.equal(response.response.directives[0].audioItem.stream.token, '0');
-                assert.equal(response.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP103.mp3?dest-id=432208')
+                assert.equal(response.response.directives[0].audioItem.stream.url, 'https://bonentendeurmedia.com/mixtape/36_autumn_2017_coluche.mp3')
                 done();
             });
         });
@@ -69,7 +69,7 @@ describe('Streamer', function() {
                 alexa.playbackNearlyFinished(function (error, payload) {
                     assert.equal(payload.response.directives[0].type, 'AudioPlayer.Play');
                     assert.equal(payload.response.directives[0].playBehavior, 'ENQUEUE');
-                    assert.equal(payload.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP104.mp3?dest-id=432208');
+                    assert.equal(payload.response.directives[0].audioItem.stream.url, 'https://bonentendeurmedia.com/mixtape/35_september_2017_moreau.mp3');
                 });
 
                 // Emulates the track playing to completion
@@ -81,7 +81,7 @@ describe('Streamer', function() {
                     // Check that playback started on the next track
                     alexa.once('AudioPlayer.PlaybackStarted', function(audioItem) {
                         assert.equal(audioItem.stream.token, '1');
-                        assert.equal(audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP104.mp3?dest-id=432208');
+                        assert.equal(audioItem.stream.url, 'https://bonentendeurmedia.com/mixtape/35_september_2017_moreau.mp3');
                         done();
                     });
                 });
@@ -100,7 +100,7 @@ describe('Streamer', function() {
                 //  This request comes from the Alexa service AFTER the AudioPlayer.Play directive is received
                 //  Once gets triggered a single time when the specified event occurs
                 alexa.once('AudioPlayer.PlaybackStarted', function (audioItem) {
-                    assert.equal(audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP103.mp3?dest-id=432208')
+                    assert.equal(audioItem.stream.url, 'https://bonentendeurmedia.com/mixtape/36_autumn_2017_coluche.mp3')
                     done();
                 });
 
@@ -108,7 +108,7 @@ describe('Streamer', function() {
                 alexa.intended('AMAZON.NextIntent', null, function (error, response) {
                     assert.equal(payload.response.directives[0].type, 'AudioPlayer.Play');
                     assert.equal(payload.response.directives[0].audioItem.stream.token, '1');
-                    assert.equal(payload.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP104.mp3?dest-id=432208');
+                    assert.equal(payload.response.directives[0].audioItem.stream.url, 'https://bonentendeurmedia.com/mixtape/35_september_2017_moreau.mp3');
                 });
             });
         });
@@ -121,7 +121,7 @@ describe('Streamer', function() {
                 alexa.intended('AMAZON.NextIntent', null, function (error, response) {
                     assert.equal(response.response.directives[0].type, 'AudioPlayer.Play');
                     assert.equal(response.response.directives[0].audioItem.stream.token, '2');
-                    assert.equal(response.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP_-_105_-_Mastermind_-_final_mp3.mp3?dest-id=432208');
+                    assert.equal(response.response.directives[0].audioItem.stream.url, 'https://bonentendeurmedia.com/mixtape/34_summer_2017_sy.mp3');
                     done();
                 });
             });
@@ -136,7 +136,7 @@ describe('Streamer', function() {
                 alexa.intended('AMAZON.PreviousIntent', null, function (error, response) {
                     assert.equal(response.response.directives[0].type, 'AudioPlayer.Play');
                     assert.equal(response.response.directives[0].audioItem.stream.token, '0');
-                    assert.equal(response.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP103.mp3?dest-id=432208');
+                    assert.equal(response.response.directives[0].audioItem.stream.url, 'https://bonentendeurmedia.com/mixtape/36_autumn_2017_coluche.mp3');
                     done();
                 });
             });
@@ -182,11 +182,11 @@ describe('Streamer', function() {
                     assert.equal(response.response.outputSpeech.ssml, '<speak> At any time, just say Alexa Play Next to jump into a podcast </speak>');
                     assert.equal(response.response.directives[0].type, 'AudioPlayer.Play');
                     assert.equal(response.response.directives[0].audioItem.stream.token, '0');
-                    assert.equal(response.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP103-Summary.mp3');
+                    assert.equal(response.response.directives[0].audioItem.stream.url, 'https://s3.amazonaws.com/streamer-bucket/NoSummaryAvailable.mp3');
                     alexa.intended('AMAZON.NextIntent', null, function (error, response) {
                         assert.equal(response.response.directives[0].type, 'AudioPlayer.Play');
                         assert.equal(response.response.directives[0].audioItem.stream.token, '0');
-                        assert.equal(response.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP103.mp3?dest-id=432208');
+                        assert.equal(response.response.directives[0].audioItem.stream.url, 'https://bonentendeurmedia.com/mixtape/36_autumn_2017_coluche.mp3');
                         done();
                     });
                 });
@@ -198,7 +198,7 @@ describe('Streamer', function() {
             alexa.spoken('Scan', function (error, response) {
                 assert.equal(response.response.directives[0].type, 'AudioPlayer.Play');
                 assert.equal(response.response.directives[0].audioItem.stream.token, '0');
-                assert.equal(response.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP103-Summary.mp3');
+                assert.equal(response.response.directives[0].audioItem.stream.url, 'https://s3.amazonaws.com/streamer-bucket/NoSummaryAvailable.mp3');
                 alexa.once('AudioPlayer.PlaybackStarted', function () {
                     alexa.playbackNearlyFinished().playbackFinished();
 
@@ -210,7 +210,7 @@ describe('Streamer', function() {
                             alexa.intended('AMAZON.NextIntent', null, function (request, response) {
                                 assert.equal(response.response.directives[0].type, 'AudioPlayer.Play');
                                 assert.equal(response.response.directives[0].audioItem.stream.token, '1');
-                                assert.equal(response.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP104.mp3?dest-id=432208');
+                                assert.equal(response.response.directives[0].audioItem.stream.url, 'https://bonentendeurmedia.com/mixtape/35_september_2017_moreau.mp3');
                                 done();
                             });
                         });
@@ -224,7 +224,7 @@ describe('Streamer', function() {
             alexa.spoken('Scan', function (error, response) {
                 assert.equal(response.response.directives[0].type, 'AudioPlayer.Play');
                 assert.equal(response.response.directives[0].audioItem.stream.token, '0');
-                assert.equal(response.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP103-Summary.mp3');
+                assert.equal(response.response.directives[0].audioItem.stream.url, 'https://s3.amazonaws.com/streamer-bucket/NoSummaryAvailable.mp3');
                 alexa.once('AudioPlayer.PlaybackStarted', function () {
                     alexa.playbackNearlyFinished().playbackFinished();
 
@@ -236,7 +236,7 @@ describe('Streamer', function() {
                             alexa.intended('AMAZON.PreviousIntent', null, function (request, response) {
                                 assert.equal(response.response.directives[0].type, 'AudioPlayer.Play');
                                 assert.equal(response.response.directives[0].audioItem.stream.token, '0');
-                                assert.equal(response.response.directives[0].audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP103-Summary.mp3');
+                                assert.equal(response.response.directives[0].audioItem.stream.url, 'https://s3.amazonaws.com/streamer-bucket/NoSummaryAvailable.mp3');
                                 done();
                             });
                         });
@@ -251,7 +251,7 @@ describe('Streamer', function() {
             this.timeout(10000);
             alexa.launched(function (error, response) {
                 alexa.spoken('About the podcast', function (error, response) {
-                    assert.equal(response.response.outputSpeech.ssml, '<speak> <audio src="https://s3.amazonaws.com/bespoken/streaming/bespokenspodcast-ABOUT.mp3" />You can say play, scan titles, or about the podcast </speak>');
+                    assert.equal(response.response.outputSpeech.ssml, '<speak> Bon Entendeur, c’est avant tout un trio d’amis fédérés par une même passion de la musique et de son esthétique, et qui utilise celle-ci pour sublimer la culture française et les personnalités qui l’incarnent. </speak>');
                     assert(!response.response.directives);
                     done();
                 });
@@ -271,13 +271,13 @@ describe('Streamer', function() {
                         alexa.launched(function (error, response, request) {
                             assert.equal(request.session.new, true);
                             console.log('RESPONSE: ' + response.sessionAttributes['STATE']);
-                            assert.equal(response.response.outputSpeech.ssml, '<speak> You were listening to TIP 103 : Life Inc. - Running your home finances like a business w/ Doug McCormick Would you like to resume? </speak>');
+                            assert.equal(response.response.outputSpeech.ssml, '<speak> You were listening to Le Culot Would you like to resume? </speak>');
                             alexa.intended('AMAZON.YesIntent', null, function (error, response, request) {
                                 assert.equal(request.session.attributes['STATE'], '_RESUME_DECISION_MODE');
                             });
 
                             alexa.once('AudioPlayer.PlaybackStarted', function(audioItem) {
-                                assert.equal(audioItem.stream.url, 'https://traffic.libsyn.com/bespoken/TIP103.mp3?dest-id=432208');
+                                assert.equal(audioItem.stream.url, 'https://bonentendeurmedia.com/mixtape/36_autumn_2017_coluche.mp3');
                                 assert.equal(audioItem.stream.offsetInMilliseconds, 1000);
                                 done();
                             });
@@ -295,13 +295,13 @@ describe('Streamer', function() {
                     alexa.intended('AMAZON.StopIntent', null, function () {
                         alexa.launched(function (error, response, request) {
                             assert.equal(request.session.new, true);
-                            assert.equal(response.response.outputSpeech.ssml, '<speak> You were listening to TIP 103 : Life Inc. - Running your home finances like a business w/ Doug McCormick Would you like to resume? </speak>');
+                            assert.equal(response.response.outputSpeech.ssml, '<speak> You were listening to Le Culot Would you like to resume? </speak>');
                             assert.equal(response.sessionAttributes['STATE'], '_RESUME_DECISION_MODE');
 
                             alexa.intended('AMAZON.NoIntent', null, function (error, response, request) {
                                 assert.equal(request.session.attributes['STATE'], '_RESUME_DECISION_MODE');
                                 assert.equal(response.sessionAttributes['STATE'], '');
-                                assert.equal(response.response.outputSpeech.ssml, '<speak> <audio src="https://s3.amazonaws.com/bespoken/streaming/bespokenspodcast-INTRODUCTION.mp3" />You can say play, scan titles, or about the podcast </speak>');
+                                assert.equal(response.response.outputSpeech.ssml, '<speak> BonEntendeur. You can say play, scan titles or about the show </speak>');
                                 done();
                             });
                         });
@@ -318,7 +318,7 @@ describe('Streamer', function() {
                     alexa.intended('AMAZON.StopIntent', null, function () {
                         alexa.launched(function (error, response, request) {
                             assert.equal(request.session.new, true);
-                            assert.equal(response.response.outputSpeech.ssml, '<speak> <audio src=\"https://s3.amazonaws.com/bespoken/streaming/bespokenspodcast-INTRODUCTION.mp3\" />You can say play, scan titles, or about the podcast </speak>');
+                            assert.equal(response.response.outputSpeech.ssml, '<speak> BonEntendeur. You can say play, scan titles or about the show </speak>');
                             assert.equal(response.sessionAttributes['STATE'], '');
                             alexa.spoken('Play', function(error, response){
                                 console.log("response: " + response);
